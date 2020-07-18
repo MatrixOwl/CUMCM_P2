@@ -14,20 +14,48 @@ def function(o):
     return []
 
 
+def function_p(o):
+    """
+    wait
+    :return: when init begin, which equipment can move
+    """
+    return []
+
+
+def function_old_pos():
+    """
+    wait
+    :return: when init begin, the old position
+    """
+    return []
+
+
 def build_init_pop_with_rules(Updata_num):
     """
-    :param Updata_num: unmber of the update of equipments
+    :param Updata_num: number of the update of equipments
     :return: init Gene
     """
     All_Gene = []
 
+    init_old_pos = function_old_pos()
+    init_can_equip_move = function_p(init_old_pos)
+
     Gene_data = []
     can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
     m_num = [9, 13, 13, 16, 11, 10]
+
+    sum_equip = 0
+
     for i in range(6):
+        if i > 0:
+            sum_equip += m_num[i - 1]
         for j in range(m_num[i]):
-            rc = random.choice(can_choose[i])
-            Gene_data.append(rc)
+            if init_can_equip_move[sum_equip + j] == 1:
+                rc = random.choice(can_choose[i])
+                Gene_data.append(rc)
+            else:
+                Gene_data.append(init_old_pos[sum_equip + j])
+
     All_Gene.append(Gene_data)
 
     old_pos = Gene_data
@@ -185,11 +213,16 @@ class GA:
             for Rule in Rules:
 
                 if not geninfo1_can or not geninfo2_can:
+
+                    init_old_pos = function_old_pos()
+                    init_can_equip_move = function_p(init_old_pos)
+
                     pos1 = random.randrange(Rule[0], Rule[1])
                     pos2 = random.randrange(Rule[0], Rule[1])
                     for R in range(Rule[0], Rule[1]):
                         p = random.randrange(0, 1)
-                        if min(pos1, pos2) <= R < max(pos1, pos2) and p <= self.parameter[0]:
+                        if min(pos1, pos2) <= R < max(pos1, pos2) and p <= self.parameter[0] \
+                                and init_can_equip_move[sum_equip + R] == 1:
                             temp1.append(geninfo2[R])
                             temp2.append(geninfo1[R])
                         else:
@@ -247,9 +280,13 @@ class GA:
             for Rule in self.Rules:
 
                 if not geneinfo_can:
+
+                    init_old_pos = function_old_pos()
+                    init_can_equip_move = function_p(init_old_pos)
+
                     for place in range(Rule[0], Rule[1]):
                         p = random.randrange(0, 1)
-                        if p <= self.parameter[1]:
+                        if p <= self.parameter[1] and init_can_equip_move[sum_equip + place] == 1:
                             # pos = random.randrange(Rule[0], Rule[1])
                             replace = random.choice(Rule[2])
                             crossoff.data[time_peace][place] = replace
