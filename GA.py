@@ -6,6 +6,21 @@ import numpy as np
 ###############################
 
 
+def Rules():
+    can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
+    m_num = [9, 13, 13, 15, 11, 10]
+    Rules = []
+    Sum = 0
+    for i in range(6):
+        start = Sum
+        end = Sum + m_num[i]
+        choose = can_choose[i]
+        Rule = [start, end, choose]
+        Rules.append(Rule)
+        Sum += m_num[i]
+    return Rules
+
+
 def function(o):
     """
     wait
@@ -502,18 +517,6 @@ if __name__ == '__main__':
     # bound is a leftover problem so it may useless for us but I think we should still keep it for a rainy day
     ###########
 
-    can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
-    m_num = [9, 13, 13, 15, 11, 10]
-    Rules = []
-    Sum = 0
-    for i in range(6):
-        start = Sum
-        end = Sum + m_num[i]
-        choose = can_choose[i]
-        Rule = [start, end, choose]
-        Rules.append(Rule)
-        Sum += m_num[i]
-
-    parameter = [0.8, 0.3, 1000, 1000, 0, 1, 9, Rules]
+    parameter = [0.8, 0.3, 1000, 1000, 0, 1, 9, Rules()]
     run = GA(parameter)
     run.GA_main()
