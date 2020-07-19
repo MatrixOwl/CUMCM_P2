@@ -11,7 +11,10 @@ def function(o):
     wait
     :return: which equipment can move
     """
-    return []
+
+    can_move = function_p(function_old_pos())
+
+    return can_move
 
 
 def function_p(o):
@@ -29,7 +32,7 @@ def function_p(o):
 
     # PHL
     i_old_pos.append(0)
-    i_old_pos.append(1)
+    i_old_pos.append(0)
     for i in range(11):
         i_old_pos.append(0)
 
@@ -78,9 +81,22 @@ def function_old_pos():
 
     # PHL
     i_old_pos.append(0)
-    i_old_pos.append(1)
+    old_pos.append(2)
+    i_old_pos.append(0)
+    old_pos.append(14)
     for i in range(11):
         i_old_pos.append(0)
+
+    for i in range(3):
+        old_pos.append(2)
+    old_pos.append(18)
+    old_pos.append(7)
+    old_pos.append(14)
+    old_pos.append(18)
+    old_pos.append(18)
+    old_pos.append(7)
+    old_pos.append(14)
+    old_pos.append(14)
 
     # CVD
     for i in range(13):
@@ -168,7 +184,6 @@ def build_init_pop_with_rules(Updata_num):
 
     init_old_pos = function_old_pos()
     init_can_equip_move = function_p(init_old_pos)
-
     Gene_data = []
     can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
     m_num = [9, 13, 13, 15, 11, 10]
@@ -256,7 +271,7 @@ class GA:
 
         # HERE: we need a fitness function over here
 
-        fitness = 0
+        fitness = random.random()
         return fitness
 
     def selectBest(self, pop):
@@ -351,7 +366,7 @@ class GA:
                     for R in range(Rule[0], Rule[1]):
                         p = random.randrange(0, 1)
                         if min(pos1, pos2) <= R < max(pos1, pos2) and p <= self.parameter[0] \
-                                and init_can_equip_move[sum_equip + R] == 1:
+                                and init_can_equip_move[R] == 1:
                             temp1.append(geninfo2[R])
                             temp2.append(geninfo1[R])
                         else:
@@ -363,7 +378,7 @@ class GA:
                     for R in range(Rule[0], Rule[1]):
                         p = random.randrange(0, 1)
                         if min(pos1, pos2) <= R < max(pos1, pos2) and p <= self.parameter[0] \
-                                and geninfo1_can[sum_equip + R] == 1 and geninfo2_can[sum_equip + R] == 1:
+                                and geninfo1_can[R] == 1 and geninfo2_can[R] == 1:
                             temp1.append(geninfo2[R])
                             temp2.append(geninfo1[R])
                         else:
@@ -415,14 +430,14 @@ class GA:
 
                     for place in range(Rule[0], Rule[1]):
                         p = random.randrange(0, 1)
-                        if p <= self.parameter[1] and init_can_equip_move[sum_equip + place] == 1:
+                        if p <= self.parameter[1] and init_can_equip_move[place] == 1:
                             # pos = random.randrange(Rule[0], Rule[1])
                             replace = random.choice(Rule[2])
                             crossoff.data[time_peace][place] = replace
                 else:
                     for place in range(Rule[0], Rule[1]):
                         p = random.randrange(0, 1)
-                        if p <= self.parameter[1] and geneinfo_can[sum_equip + place]:
+                        if p <= self.parameter[1] and geneinfo_can[place]:
                             # pos = random.randrange(Rule[0], Rule[1])
                             replace = random.choice(Rule[2])
                             crossoff.data[time_peace][place] = replace
@@ -486,6 +501,19 @@ if __name__ == '__main__':
     ###########
     # bound is a leftover problem so it may useless for us but I think we should still keep it for a rainy day
     ###########
-    parameter = []
+
+    can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
+    m_num = [9, 13, 13, 15, 11, 10]
+    Rules = []
+    Sum = 0
+    for i in range(6):
+        start = Sum
+        end = Sum + m_num[i]
+        choose = can_choose[i]
+        Rule = [start, end, choose]
+        Rules.append(Rule)
+        Sum += m_num[i]
+
+    parameter = [0.8, 0.3, 1000, 1000, 0, 1, 9, Rules]
     run = GA(parameter)
     run.GA_main()
