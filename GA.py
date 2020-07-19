@@ -19,7 +19,40 @@ def function_p(o):
     wait
     :return: when init begin, which equipment can move
     """
-    return []
+
+    # MSP
+    i_old_pos = [0]
+    for i in range(3):
+        i_old_pos.append(1)
+    for i in range(5):
+        i_old_pos.append(0)
+
+    # PHL
+    i_old_pos.append(0)
+    i_old_pos.append(1)
+    for i in range(11):
+        i_old_pos.append(0)
+
+    # CVD
+    for i in range(13):
+        i_old_pos.append(0)
+
+    # DRY
+    for i in range(7):
+        i_old_pos.append(0)
+    i_old_pos.append(1)
+    for i in range(7):
+        i_old_pos.append(0)
+
+    # WET
+    for i in range(11):
+        i_old_pos.append(0)
+
+    # STR
+    for i in range(10):
+        i_old_pos.append(0)
+
+    return i_old_pos
 
 
 def function_old_pos():
@@ -27,7 +60,103 @@ def function_old_pos():
     wait
     :return: when init begin, the old position
     """
-    return []
+
+    # MSP
+    i_old_pos = [0]
+    old_pos = [6]
+
+    for i in range(3):
+        i_old_pos.append(1)
+        old_pos.append(0)
+    for i in range(5):
+        i_old_pos.append(0)
+
+    for i in range(3):
+        old_pos.append(6)
+    old_pos.append(1)
+    old_pos.append(6)
+
+    # PHL
+    i_old_pos.append(0)
+    i_old_pos.append(1)
+    for i in range(11):
+        i_old_pos.append(0)
+
+    # CVD
+    for i in range(13):
+        i_old_pos.append(0)
+
+    old_pos.append(2)
+    old_pos.append(14)
+    for i in range(3):
+        old_pos.append(2)
+    old_pos.append(18)
+    old_pos.append(7)
+    old_pos.append(14)
+    old_pos.append(18)
+    old_pos.append(18)
+    old_pos.append(7)
+    old_pos.append(14)
+    old_pos.append(14)
+
+    # DRY
+    for i in range(7):
+        i_old_pos.append(0)
+
+    old_pos.append(9)
+    old_pos.append(11)
+    old_pos.append(9)
+    old_pos.append(11)
+    old_pos.append(15)
+    old_pos.append(9)
+    old_pos.append(9)
+
+    i_old_pos.append(1)
+    old_pos.append(0)
+
+    for i in range(7):
+        i_old_pos.append(0)
+
+    old_pos.append(9)
+    old_pos.append(15)
+    old_pos.append(9)
+    old_pos.append(15)
+    old_pos.append(9)
+    old_pos.append(11)
+    old_pos.append(11)
+
+    # WET
+    for i in range(11):
+        i_old_pos.append(0)
+
+    old_pos.append(10)
+    old_pos.append(8)
+    old_pos.append(10)
+    old_pos.append(3)
+    old_pos.append(10)
+    old_pos.append(3)
+    old_pos.append(8)
+    old_pos.append(3)
+    old_pos.append(19)
+    old_pos.append(19)
+    old_pos.append(19)
+
+    # STR
+    for i in range(10):
+        i_old_pos.append(0)
+
+    old_pos.append(4)
+    old_pos.append(4)
+    old_pos.append(16)
+    old_pos.append(20)
+    old_pos.append(20)
+    old_pos.append(12)
+    old_pos.append(4)
+    old_pos.append(20)
+    old_pos.append(16)
+    old_pos.append(12)
+
+    return old_pos
 
 
 def build_init_pop_with_rules(Updata_num):
@@ -42,7 +171,7 @@ def build_init_pop_with_rules(Updata_num):
 
     Gene_data = []
     can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
-    m_num = [9, 13, 13, 16, 11, 10]
+    m_num = [9, 13, 13, 15, 11, 10]
 
     sum_equip = 0
 
@@ -63,7 +192,7 @@ def build_init_pop_with_rules(Updata_num):
     for _ in range(1, Updata_num):
         Gene_data = []
         can_choose = [[1, 6], [2, 7, 14, 18], [5, 13], [9, 11, 15], [3, 8, 10, 19], [4, 12, 16, 20]]
-        m_num = [9, 13, 13, 16, 11, 10]
+        m_num = [9, 13, 13, 15, 11, 10]
 
         sum_equip = 0
         can_equip_move = function(old_pos)
@@ -207,7 +336,7 @@ class GA:
                     temp2.append(geninfo1[i])
             '''
 
-            m_num = [9, 13, 13, 16, 11, 10]
+            m_num = [9, 13, 13, 15, 11, 10]
             sum_equip = 0
             i = 0
             for Rule in Rules:
@@ -273,7 +402,7 @@ class GA:
             else:
                 geneinfo_can = function(old_pos)
 
-            m_num = [9, 13, 13, 16, 11, 10]
+            m_num = [9, 13, 13, 15, 11, 10]
             sum_equip = 0
             i = 0
 
